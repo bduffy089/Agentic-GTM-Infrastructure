@@ -24,9 +24,9 @@ No proprietary code is included. This is a reference architecture.
                +--+------+------+------+----+
                   |      |      |      |
        +----------+  +---+--+  ++---------+  +---+-----+
-       | Market   |  | GTM  |  | Brand       |  |  ARE     |
-       | Research |  | Ops  |  | Consistency |  | (Agent  |
-       | /Writer  |  |      |  |             |  | Reliab.)|
+       | Market   |  | GTM  |  | Designer |  |  ARE     |
+       | Research |  | Ops  |  | /Brand   |  | (Agent  |
+       | /Writer  |  |      |  |          |  | Reliab.)|
        +---------+   +------+  +----------+  +---------+
 ```
 
@@ -37,7 +37,7 @@ No proprietary code is included. This is a reference architecture.
 | [Chief of Staff](agents/chief-of-staff.md) | Triage, delegation, daily standups, agent orchestration | Discord, PostgreSQL, runtime API |
 | [Market Researcher / Writer](agents/market-researcher.md) | Market research, cold email copy, follow-ups, LinkedIn messaging, A/B variants | LLM API, CRM enrichment tools |
 | [GTM Ops](agents/gtm-ops.md) | Workflow automation, sending infrastructure, analytics pipelines | n8n, PostgreSQL, Metabase dashboards |
-| [Brand Consistency](agents/brand.md) | Visual identity, landing page aesthetics, brand consistency | Design tools, frontend frameworks |
+| [Designer/Brand](agents/brand.md) | Visual identity, landing page aesthetics, brand consistency | Design tools, frontend frameworks |
 | [ARE (Agent Reliability Engineer / Security)](agents/are.md) | Agent reliability, incident response, system health, security auditing | PostgreSQL, monitoring, GitHub |
 
 ## Stack
