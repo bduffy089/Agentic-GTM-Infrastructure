@@ -1,5 +1,7 @@
 # Agentic GTM Infrastructure
 
+> **Patent Pending** — The systems and processes described in this repository are the subject of a pending patent application. All rights reserved. See [LICENSE](LICENSE) for details.
+
 A multi-agent system being built to scale a startup's go-to-market operations. Specialized AI agents coordinate through a shared runtime to handle market research, outbound, brand, infrastructure reliability, and orchestration — replacing fragmented manual workflows with an autonomous operations layer.
 
 ## What This Is
@@ -114,4 +116,4 @@ The identity file pattern means agents are modular — you can spin up a new age
 
 ## License
 
-MIT
+Copyright (c) 2026 Britney Duffy. All Rights Reserved. Patent Pending. See [LICENSE](LICENSE).
