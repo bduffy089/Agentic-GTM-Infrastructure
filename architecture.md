@@ -17,9 +17,9 @@ This system uses a **hub-and-spoke multi-agent pattern** where a Chief of Staff 
           +------------+  |  |  +------------+
           |         +-----+  +-----+         |
     +-----v--+ +----v---+ +---v--+ +----v---+
-    |Market  | |GTM Ops | |Brand | |  ARE   |
-    |Research| |        | |      | |        |
-    |/Writer | |        | |      | |        |
+    |Market  | |GTM Ops | |Brand | |  ARE    |
+    |Research| |        | |      | | (Agent |
+    |/Writer | |        | |      | | Reliab)|
     +--------+ +--------+ +------+ +--------+
 ```
 
@@ -46,7 +46,7 @@ Agents are built and iterated on using **Claude Code** as the primary developmen
 | Market Researcher / Writer | Research findings, draft review, copy approval, variant discussion |
 | GTM Ops | Pipeline status, send confirmations, delivery alerts |
 | Brand | Design reviews, asset deliveries, brand discussions |
-| ARE | Incident alerts, health reports, system status |
+| ARE (Agent Reliability Engineer / Security) | Incident alerts, health reports, system status |
 
 Why Discord? It provides a human-readable audit trail, supports bot integration natively, and lets the operator participate in agent workflows without switching tools.
 
@@ -58,7 +58,7 @@ Two PostgreSQL databases with separated concerns:
 - `agents` — registered agents, metadata, status
 - `tasks` — work queue (assigned_to, status, timestamps)
 - `heartbeats` — agent health pings with timestamps
-- `incidents` — ARE incident tracking (severity, root cause, resolution)
+- `incidents` — ARE (Agent Reliability Engineer) incident tracking (severity, root cause, resolution)
 
 ### Analytics Database
 - `campaign_events` — email sends, opens, clicks, replies, bounces

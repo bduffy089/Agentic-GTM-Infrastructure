@@ -22,9 +22,9 @@ No proprietary code is included. This is a reference architecture.
                +--+------+------+------+----+
                   |      |      |      |
        +----------+  +---+--+  ++---------+  +---+-----+
-       | Market   |  | GTM  |  | Brand    |  |  ARE    |
-       | Research |  | Ops  |  |          |  |         |
-       | /Writer  |  |      |  |          |  |         |
+       | Market   |  | GTM  |  | Brand    |  |  ARE     |
+       | Research |  | Ops  |  |          |  | (Agent  |
+       | /Writer  |  |      |  |          |  | Reliab.)|
        +---------+   +------+  +----------+  +---------+
 ```
 
@@ -36,7 +36,7 @@ No proprietary code is included. This is a reference architecture.
 | [Market Researcher / Writer](agents/market-researcher.md) | Market research, cold email copy, follow-ups, LinkedIn messaging, A/B variants | LLM API, CRM enrichment tools |
 | [GTM Ops](agents/gtm-ops.md) | Workflow automation, sending infrastructure, analytics pipelines | n8n, PostgreSQL, Metabase dashboards |
 | [Brand](agents/brand.md) | Visual identity, landing page aesthetics, brand consistency | Design tools, frontend frameworks |
-| [ARE](agents/are.md) | Agent reliability, incident response, system health, security auditing | PostgreSQL, monitoring, GitHub |
+| [ARE (Agent Reliability Engineer / Security)](agents/are.md) | Agent reliability, incident response, system health, security auditing | PostgreSQL, monitoring, GitHub |
 
 ## Stack
 
