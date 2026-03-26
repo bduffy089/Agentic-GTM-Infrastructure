@@ -22,7 +22,7 @@ Owns visual identity and brand consistency across all client-facing assets. Hand
 
 ## Workflow
 
-1. Receive a design request or review task from the coordinator
+1. Receive a design request or review task from the Chief of Staff
 2. Reference the brand guide for current standards
 3. Generate or evaluate the asset against brand rules
 4. Post deliverables or feedback to Discord

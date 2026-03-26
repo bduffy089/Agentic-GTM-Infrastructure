@@ -19,18 +19,18 @@ Owns the operational layer between copy and results. Manages workflow automation
 - **Communication:** Discord (dedicated GTM pipeline channel)
 - **Workflows:** n8n (self-hosted) — webhook-triggered automation flows
 - **State:** PostgreSQL — dedicated analytics database for campaign metrics, lead scoring, event logs
-- **Dashboards:** Metabase — connected to the analytics database
+- **Dashboards:** Metabase — connected to the analytics database, feeds into Pathmode
 - **Integrations:** Email sending platforms, enrichment APIs, CRM webhooks
 
 ## Workflow
 
-1. Receive approved copy from the outbound writer (via coordinator)
+1. Receive approved copy from the Market Researcher (via Chief of Staff)
 2. Load prospects into the appropriate n8n sequence
 3. Configure sending parameters (timing, throttling, domain rotation)
 4. Monitor delivery events via webhooks
 5. Pipe results into the analytics database
-6. Surface performance metrics in dashboards
-7. Feed learnings back to the outbound writer for copy optimization
+6. Surface performance metrics in Metabase dashboards
+7. Feed learnings back through Pathmode to inform copy and targeting optimization
 
 ## Key Design Decisions
 
@@ -38,3 +38,4 @@ Owns the operational layer between copy and results. Manages workflow automation
 - Analytics database is separate from the operational database to avoid coupling
 - n8n workflows are documented as owned assets with version tracking
 - Deliverability monitoring runs on a continuous loop, not just at send time
+- Dashboard data flows into Pathmode to close the GTM feedback loop
