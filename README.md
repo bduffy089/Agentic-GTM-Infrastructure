@@ -1,119 +1,138 @@
+<div align="center">
+
 # Agentic GTM Infrastructure
 
-> **Patent Pending** — The systems and processes described in this repository are the subject of a pending patent application. All rights reserved. See [LICENSE](LICENSE) for details.
+### The autonomous operating system for go-to-market.
 
-A multi-agent system being built to scale a startup's go-to-market operations. Specialized AI agents coordinate through a shared runtime to handle market research, outbound, brand, infrastructure reliability, and orchestration — replacing fragmented manual workflows with an autonomous operations layer.
+Five AI agents. One shared runtime. Zero fragmented workflows.
 
-## What This Is
+[![Patent Pending](https://img.shields.io/badge/Patent-Pending-blue)](#license)
+[![All Rights Reserved](https://img.shields.io/badge/License-All%20Rights%20Reserved-red)](LICENSE)
 
-This repo documents the architecture and agent design patterns behind a production multi-agent GTM system. Each agent owns a specific domain, communicates via a shared message bus (Discord), persists state in PostgreSQL, and operates semi-autonomously under human oversight.
+---
 
-No proprietary code is included. This is a reference architecture.
+[Architecture](architecture.md) · [Agent Specs](agents/) · [License](LICENSE)
 
-## System Overview
+</div>
 
-```
-+---------------------------------------------------------+
-|                    Human Operator                        |
-|              (strategy + final authority)                |
-+----------------------------+----------------------------+
-                             |
-               +-------------v--------------+
-               |    Agent: Chief of Staff    |
-               |    (triage + delegation)    |
-               +--+------+------+------+----+
-                  |      |      |      |
-       +----------+  +---+--+  ++---------+  +---+-----+
-       | Market   |  | GTM  |  | Designer |  |  ARE     |
-       | Research |  | Ops  |  | /Brand   |  | (Agent  |
-       | /Writer  |  |      |  |          |  | Reliab.)|
-       +---------+   +------+  +----------+  +---------+
-```
+## The Problem
 
-## Agents
+| Without Agentic GTM | With Agentic GTM |
+|---|---|
+| Manual research scattered across tabs and tools | AI agent continuously researches and synthesizes market intel |
+| Copy written from scratch every time | Agent-generated drafts with A/B variants, refined by feedback loops |
+| Outbound campaigns stitched together with 5+ tools | Unified pipeline: copy → send → track → optimize |
+| No visibility into what's working | Real-time dashboards feeding into strategic synthesis |
+| Scaling means hiring more people | Scaling means spinning up another agent |
 
-| Agent | Domain | Key Integrations |
-|-------|--------|-----------------|
-| [Chief of Staff](agents/chief-of-staff.md) | Triage, delegation, daily standups, agent orchestration | Discord, PostgreSQL, runtime API |
-| [Market Researcher / Writer](agents/market-researcher.md) | Market research, cold email copy, follow-ups, LinkedIn messaging, A/B variants | LLM API, CRM enrichment tools |
-| [GTM Ops](agents/gtm-ops.md) | Workflow automation, sending infrastructure, analytics pipelines | n8n, PostgreSQL, Metabase dashboards |
-| [Designer/Brand](agents/brand.md) | Visual identity, landing page aesthetics, brand consistency | Design tools, frontend frameworks |
-| [ARE (Agent Reliability Engineer / Security)](agents/are.md) | Agent reliability, incident response, system health, security auditing | PostgreSQL, monitoring, GitHub |
+## How It Works
 
-## Stack
-
-- **Agent Development:** Claude Code (primary development environment for building and iterating on agents)
-- **Runtime:** TypeScript-based agent framework with WebSocket gateway
-- **Coordination:** Discord (channel-per-agent pattern)
-- **State:** PostgreSQL (operational database + analytics database)
-- **Workflows:** n8n (self-hosted, webhook-driven)
-- **Dashboards:** Metabase (connected to analytics DB, feeds into Pathmode for strategic context)
-- **Strategic Layer:** Pathmode (receives analytics from Metabase; provides feedback loops for both GTM performance and agent system improvements)
-- **Hosting:** Mix of local services and cloud deployments
-
-## Feedback Loops
-
-This system is designed with two distinct feedback loops:
-
-### GTM Performance Loop
-```
-Outbound Copy --> Send Infrastructure --> Campaign Events --> Analytics DB
-      ^                                                          |
-      |                                                          v
-      +--- Copy Optimization <--- Metabase Dashboards <--- Pathmode
-```
-Campaign data flows into analytics, surfaces in Metabase, gets synthesized in Pathmode for strategic context, and feeds back into copy and targeting decisions.
-
-### Agent System Loop
-```
-Agent Behavior --> Heartbeats/Logs --> Operational DB --> Metabase
-      ^                                                      |
-      |                                                      v
-      +--- Identity File Updates <--- ARE Review <--- Pathmode
-```
-Agent performance data flows into dashboards, gets reviewed in Pathmode alongside GTM metrics, and informs improvements to agent configurations, identity files, and coordination patterns.
-
-## Daily Standups
-
-The system runs automated daily standups coordinated by the Chief of Staff agent:
-
-- **Morning brief:** System health check, overnight incident summary, pending task queue review
-- **Agent status reports:** Each agent surfaces key metrics from their domain (pipeline stats, delivery health, open incidents)
-- **Priority alignment:** Chief of Staff synthesizes reports and flags blockers, dependencies, or drift from weekly objectives
-- **Operator digest:** Human operator receives a consolidated brief in Discord — can intervene, reprioritize, or acknowledge
-
-Standups create a daily rhythm that keeps the system self-aware without requiring the operator to actively monitor every channel.
-
-## Scaling Architecture
-
-This system is designed to scale horizontally:
+A **hub-and-spoke architecture** where a central Chief of Staff agent triages, delegates, and orchestrates four specialized domain agents — all communicating through Discord and persisting state in PostgreSQL.
 
 ```
-Phase 1 (current):  5 agents, single operator, one GTM vertical
-Phase 2:            Add domain agents (sales ops, customer success, content)
-Phase 3:            Multi-client — replicate the agent stack per client/vertical
-Phase 4:            Agent marketplace — plug-and-play agents with standardized interfaces
+                        ┌─────────────────────┐
+                        │   Human Operator     │
+                        │ strategy + authority │
+                        └─────────┬───────────┘
+                                  │
+                        ┌─────────▼───────────┐
+                        │   Chief of Staff     │
+                        │  triage + delegate   │
+                        └──┬────┬────┬────┬───┘
+                           │    │    │    │
+                 ┌─────────┘    │    │    └─────────┐
+                 ▼              ▼    ▼              ▼
+          ┌────────────┐ ┌─────────┐ ┌──────────┐ ┌─────────┐
+          │  Market    │ │  GTM    │ │ Designer │ │  ARE    │
+          │  Research  │ │  Ops    │ │ / Brand  │ │ (Relia- │
+          │  / Writer  │ │         │ │          │ │  bility)│
+          └────────────┘ └─────────┘ └──────────┘ └─────────┘
 ```
 
-Adding a new agent follows a standard pattern:
-1. Create a workspace directory with identity files (IDENTITY.md, SOUL.md, TOOLS.md, AGENTS.md)
-2. Register in the runtime config
-3. Bind to a Discord channel
-4. Add a database record
-5. Update the Chief of Staff's awareness file
-6. Define owned tables (if any)
+## Meet the Agents
 
-The identity file pattern means agents are modular — you can spin up a new agent in hours, not weeks.
+| | Agent | What It Owns | Key Integrations |
+|---|---|---|---|
+| 🧠 | [**Chief of Staff**](agents/chief-of-staff.md) | Triage, delegation, daily standups, cross-agent orchestration | Discord, PostgreSQL, Runtime API |
+| 🔍 | [**Market Researcher / Writer**](agents/market-researcher.md) | Market research, cold email copy, LinkedIn messaging, A/B variants | LLM API, CRM enrichment |
+| ⚙️ | [**GTM Ops**](agents/gtm-ops.md) | Workflow automation, sending infrastructure, analytics pipelines | n8n, PostgreSQL, Metabase |
+| 🎨 | [**Designer / Brand**](agents/brand.md) | Visual identity, landing pages, brand consistency, design system | Design tools, frontend frameworks |
+| 🛡️ | [**ARE (Agent Reliability Engineer)**](agents/are.md) | System health, incident response, security auditing | PostgreSQL, monitoring, GitHub |
+
+## The Stack
+
+| Layer | Technology |
+|---|---|
+| **Agent Development** | Claude Code |
+| **Runtime** | TypeScript agent framework + WebSocket gateway |
+| **Coordination** | Discord (channel-per-agent pattern) |
+| **State** | PostgreSQL (operational DB + analytics DB) |
+| **Workflows** | n8n (self-hosted, webhook-driven) |
+| **Dashboards** | Metabase → Pathmode (strategic synthesis) |
+| **Hosting** | Local services + cloud deployments |
+
+## Two Feedback Loops
+
+The system doesn't just execute — it learns.
+
+### 📊 GTM Performance Loop
+```
+Outbound Copy → Send Infrastructure → Campaign Events → Analytics DB
+      ↑                                                       │
+      │                                                       ▼
+      └── Copy Optimization ← Metabase Dashboards ← Pathmode
+```
+
+### 🔄 Agent System Loop
+```
+Agent Behavior → Heartbeats/Logs → Operational DB → Metabase
+      ↑                                                  │
+      │                                                  ▼
+      └── Identity File Updates ← ARE Review ← Pathmode
+```
+
+## What This Is — and Isn't
+
+**This is:**
+- A reference architecture for production multi-agent GTM systems
+- A documented pattern for hub-and-spoke agent coordination
+- A framework for scaling go-to-market with AI agents
+- Patent pending intellectual property
+
+**This is not:**
+- A SaaS product (yet)
+- Open-source code you can fork and deploy
+- A theoretical whitepaper — this runs in production
 
 ## Design Principles
 
-1. **Single-owner domains** — Each agent owns one operational area. No overlap.
-2. **Human-in-the-loop** — Agents draft; humans approve. No unsupervised sends.
-3. **Shared state, separate concerns** — All agents read/write to the same databases but own different tables.
-4. **Observable by default** — Every agent logs heartbeats, task completions, and failures to a central store.
-5. **Personality is a feature** — Agents have distinct operational styles defined in identity files. This isn't cosmetic — it shapes how they prioritize, communicate, and escalate.
-6. **Feedback-driven** — Both the GTM output and the agent system itself improve through structured feedback loops.
+| Principle | Why It Matters |
+|---|---|
+| **Single-owner domains** | Each agent owns one area. No overlap, no confusion. |
+| **Human-in-the-loop** | Agents draft; humans approve. No unsupervised sends. |
+| **Observable by default** | Every agent logs heartbeats, completions, and failures. |
+| **Personality is a feature** | Identity files shape how agents prioritize, communicate, and escalate. |
+| **Feedback-driven** | Both GTM output and the agent system itself improve through structured loops. |
 
-## License
+## Scaling Roadmap
 
-Copyright (c) 2026 Britney Duffy. All Rights Reserved. Patent Pending. See [LICENSE](LICENSE).
+```
+Phase 1 (current)  →  5 agents, single operator, one GTM vertical
+Phase 2            →  Add domain agents (sales ops, customer success, content)
+Phase 3            →  Multi-client: replicate the agent stack per vertical
+Phase 4            →  Agent marketplace: plug-and-play with standardized interfaces
+```
+
+New agents follow a standard pattern: identity files → runtime config → Discord channel → database record. **Spin up a new agent in hours, not weeks.**
+
+---
+
+<div align="center">
+
+**Built by [Britney Duffy](https://github.com/bduffy089)**
+
+Copyright © 2026 Britney Duffy. All Rights Reserved. Patent Pending.
+
+See [LICENSE](LICENSE) for details.
+
+</div>
