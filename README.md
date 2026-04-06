@@ -29,25 +29,9 @@ Five AI agents. One shared runtime. Zero fragmented workflows.
 
 A **hub-and-spoke architecture** where a central Chief of Staff agent triages, delegates, and orchestrates four specialized domain agents — all communicating through Discord and persisting state in PostgreSQL.
 
-```
-                        ┌─────────────────────┐
-                        │   Human Operator     │
-                        │ strategy + authority │
-                        └─────────┬───────────┘
-                                  │
-                        ┌─────────▼───────────┐
-                        │   Chief of Staff     │
-                        │  triage + delegate   │
-                        └──┬────┬────┬────┬───┘
-                           │    │    │    │
-                 ┌─────────┘    │    │    └─────────┐
-                 ▼              ▼    ▼              ▼
-          ┌────────────┐ ┌─────────┐ ┌──────────┐ ┌─────────┐
-          │  Market    │ │  GTM    │ │ Designer │ │  ARE    │
-          │  Research  │ │  Ops    │ │ / Brand  │ │ (Relia- │
-          │  / Writer  │ │         │ │          │ │  bility)│
-          └────────────┘ └─────────┘ └──────────┘ └─────────┘
-```
+<p align="center">
+  <img src="diagrams/fig1-system-overview.png" alt="System Overview" width="700"/>
+</p>
 
 ## Meet the Agents
 
@@ -75,21 +59,17 @@ A **hub-and-spoke architecture** where a central Chief of Staff agent triages, d
 
 The system doesn't just execute — it learns.
 
-### 📊 GTM Performance Loop
-```
-Outbound Copy → Send Infrastructure → Campaign Events → Analytics DB
-      ↑                                                       │
-      │                                                       ▼
-      └── Copy Optimization ← Metabase Dashboards ← Pathmode
-```
+### GTM Performance Loop
 
-### 🔄 Agent System Loop
-```
-Agent Behavior → Heartbeats/Logs → Operational DB → Metabase
-      ↑                                                  │
-      │                                                  ▼
-      └── Identity File Updates ← ARE Review ← Pathmode
-```
+<p align="center">
+  <img src="diagrams/fig2-gtm-feedback-loop.png" alt="GTM Performance Feedback Loop" width="700"/>
+</p>
+
+### Agent System Loop
+
+<p align="center">
+  <img src="diagrams/fig3-feedback-loop.png" alt="Agent System Feedback Loop" width="700"/>
+</p>
 
 ## What This Is — and Isn't
 
@@ -116,12 +96,9 @@ Agent Behavior → Heartbeats/Logs → Operational DB → Metabase
 
 ## Scaling Roadmap
 
-```
-Phase 1 (current)  →  5 agents, single operator, one GTM vertical
-Phase 2            →  Add domain agents (sales ops, customer success, content)
-Phase 3            →  Multi-client: replicate the agent stack per vertical
-Phase 4            →  Agent marketplace: plug-and-play with standardized interfaces
-```
+<p align="center">
+  <img src="diagrams/fig4-scaling-architecture.png" alt="Scaling Architecture" width="700"/>
+</p>
 
 New agents follow a standard pattern: identity files → runtime config → Discord channel → database record. **Spin up a new agent in hours, not weeks.**
 
