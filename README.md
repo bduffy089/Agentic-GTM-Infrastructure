@@ -9,6 +9,8 @@ Five AI agents. One shared runtime. Zero fragmented workflows.
 [![Patent Pending](https://img.shields.io/badge/Patent-Pending-blue)](#license)
 [![All Rights Reserved](https://img.shields.io/badge/License-All%20Rights%20Reserved-red)](LICENSE)
 
+<a href="https://www.gtmcommit.com/britney"><img src="https://www.gtmcommit.com/api/badge/britney" alt="GTM Commit Score: 255" /></a>
+
 ---
 
 [Architecture](architecture.md) · [Agent Specs](agents/) · [License](LICENSE)
